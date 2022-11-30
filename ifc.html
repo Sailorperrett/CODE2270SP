@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>BIM Grasshopper Model</title>
+    <title>BIM GRASSHOPPER MODEL</title>
     <meta charset="utf-8" />
     <meta
             name="viewport"
@@ -11,17 +11,12 @@
 </head>
 
 <body>
-<div id="info">
-    <a href="floorplate.ifc" target="_blank" rel="noopener">floorplate.ifc</a>
-    -
-    <a href="https://www.buildingsmart.org/standards/bsi-standards/industry-foundation-classes/" target="_blank" rel="noopener">IFCLoader</a>
-</div>
 
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"></script>
 
-<script type="import">
+<script type="importmap">
 			{
 				"imports": {
 					"three": "https://unpkg.com/three@0.138.3/build/three.module.js"
@@ -38,12 +33,6 @@
     let scene, camera, renderer;
 
     init();
-
-    let ifcLoader;
-    ifcLoader.ifcManager = undefined;
-    ifcLoader.ifcManager.setWasmPath = function (s) {
-        
-    }
 
     function init() {
 
@@ -74,28 +63,16 @@
         ifcLoader.ifcManager.setWasmPath( './model/' );
         ifcLoader.load( 'model/floor.ifc', function ( model ) {
 
-            model.mesh = undefined;
             scene.add( model.mesh );
             render();
 
         } );
+
         const highlightMaterial = new THREE.MeshPhongMaterial( { color: 0x0000ff, depthTest: false, transparent: true, opacity: 0.1 } );
-
-        ifcLoader.ifcManager.getExpressId = function () {
-            return undefined;
-        }
-
-        ifcLoader.ifcManager.createSubset = function (param) {
-
-        }
-
-        ifcLoader.ifcManager.getItemProperties = function () {
-            return undefined;
-        }
 
         function selectObject( event ) {
 
-            if ( event.button !== 0) return;
+            if ( event.button != 0 ) return;
 
             const mouse = new THREE.Vector2();
             mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
@@ -108,11 +85,13 @@
             if ( intersected.length ) {
 
                 const found = intersected[ 0 ];
-                const id = ifcLoader.ifcManager.getExpressId( );
+                const faceIndex = found.faceIndex;
+                const geometry = found.object.geometry;
+                const id = ifcLoader.ifcManager.getExpressId( geometry, faceIndex );
 
                 const modelID = found.object.modelID;
                 ifcLoader.ifcManager.createSubset( { modelID, ids: [ id ], scene, removePrevious: true, material: highlightMaterial } );
-                const props = ifcLoader.ifcManager.getItemProperties( );
+                const props = ifcLoader.ifcManager.getItemProperties( modelID, id, true );
                 console.log( props );
                 renderer.render( scene, camera );
 

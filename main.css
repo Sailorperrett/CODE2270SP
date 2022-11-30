@@ -1,6 +1,6 @@
 body {
     margin: 0;
-    background-color: #000;
+    background-color: #ffffff;
     color: #fff;
     font-family: Monospace;
     font-size: 13px;
@@ -9,7 +9,7 @@ body {
 }
 
 a {
-    color: #ff0;
+    color: #000000;
     text-decoration: none;
 }
 
