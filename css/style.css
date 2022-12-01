@@ -1,8 +1,8 @@
 .titleBlock {
     /* This is a comment */
-    width:80vw;
+    width:100vw;
     /*background:red;*/
-    margin-left: 10vw;
+    margin-left: 25vw;
     line-height: 1px;
     margin-top:50px;
 }
